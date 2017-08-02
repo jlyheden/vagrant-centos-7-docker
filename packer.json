@@ -1,0 +1,34 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "{{user `ovf_file`}}",
+      "ssh_username": "vagrant",
+      "ssh_private_key_file": "{{user `vagrant_key`}}",
+      "headless": "true",
+      "shutdown_command": "echo 'vagrant'|sudo -S /sbin/halt -h -p"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "",
+      "scripts": [
+        "scripts/01_misc_tools.sh",
+        "scripts/02_install_docker.sh",
+        "scripts/03_insecure_key.sh",
+        "scripts/04_install_vbox_additions.sh",
+        "scripts/99_final.sh"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "compression_level": 9,
+      "type": "vagrant",
+      "output": "centos-7-docker.box"
+    }
+  ]
+}
